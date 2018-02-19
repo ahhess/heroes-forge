@@ -1,0 +1,32 @@
+<header ng-switch on="$location.path().indexOf('/Heros/new') > -1">
+    <h3 ng-switch-when="true">Create a new Hero</h3>
+    <h3 ng-switch-when="false">View or edit Hero</h3>
+</header>
+<form id="HeroForm" name="HeroForm" class="form-horizontal" role="form">
+    
+
+    <div class="form-group" ng-class="{'has-error': HeroForm.name.$invalid}">
+        <label for="name" class="col-sm-2 control-label">Name</label>
+        <div id="nameControls" class="col-sm-10">
+            <input id="name" name="name" type="text" class="form-control" ng-model="hero.name" placeholder="Enter the Hero Name"></input>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': HeroForm.subheros.$invalid}">
+        <label for="subheros" class="col-sm-2 control-label">Subheros</label>
+        <div id="subherosControls" class="col-sm-10">
+            <select id="subheros" name="subheros" multiple class="form-control" ng-model="subherosSelection" ng-options="s.text for s in subherosSelectionList">
+                <option value="">Choose a Subheros</option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button id="saveHero" name="saveHero" class="btn btn-primary" ng-disabled="isClean() || HeroForm.$invalid" ng-click="save()"><span class="glyphicon glyphicon-ok-sign"></span> Save</button>
+            <button id="cancel" name="cancel" class="btn btn-default" ng-click="cancel()"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+            <button id="deleteHero" name="deleteHero" class="btn btn-danger" ng-show="hero.id" ng-click="remove()"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+        </div>
+    </div>
+</form>
