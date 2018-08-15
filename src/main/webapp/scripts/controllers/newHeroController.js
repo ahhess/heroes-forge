@@ -8,7 +8,7 @@ angular.module('heroes-forge').controller('NewHeroController', function ($scope,
         $scope.subherosSelectionList = $.map(items, function(item) {
             return ( {
                 value : item.id,
-                text : item.id
+                text : item.name
             });
         });
     });

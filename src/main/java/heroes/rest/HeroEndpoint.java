@@ -60,7 +60,7 @@ public class HeroEndpoint {
 	public Response findById(@PathParam("id") Long id) {
 		TypedQuery<Hero> findByIdQuery = em
 				.createQuery(
-						"SELECT DISTINCT h FROM Hero h LEFT JOIN FETCH h.subheros WHERE h.id = :entityId ORDER BY h.id",
+						"SELECT DISTINCT h FROM Hero h LEFT JOIN FETCH h.subheros WHERE h.id = :entityId ORDER BY h.name",
 						Hero.class);
 		findByIdQuery.setParameter("entityId", id);
 		Hero entity;
@@ -82,7 +82,7 @@ public class HeroEndpoint {
 			@QueryParam("max") Integer maxResult) {
 		TypedQuery<Hero> findAllQuery = em
 				.createQuery(
-						"SELECT DISTINCT h FROM Hero h LEFT JOIN FETCH h.subheros ORDER BY h.id",
+						"SELECT DISTINCT h FROM Hero h LEFT JOIN FETCH h.subheros ORDER BY h.name",
 						Hero.class);
 		if (startPosition != null) {
 			findAllQuery.setFirstResult(startPosition);

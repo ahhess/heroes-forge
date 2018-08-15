@@ -8,7 +8,7 @@
 </div>
 <hr/>
 <div>
-    <h3>Search for SubHeros</h3>
+    <h3>Search for SubHeroes</h3>
     <form id="SubHeroSearch" class="form-horizontal">
         
 
@@ -46,9 +46,9 @@
                 </tr>
             </thead>
             <tbody id="search-results-body">
-                <tr ng-repeat="result in filteredResults | startFrom:currentPage*pageSize | limitTo:pageSize">
-                    <td><a href="#/SubHeros/edit/{{result.id}}">{{result.name}}</a></td>
-                        <td><a href="#/SubHeros/edit/{{result.id}}">{{result.hero.id}}</a></td>
+                <tr ng-repeat="subhero in filteredResults | startFrom:currentPage*pageSize | limitTo:pageSize">
+                    <td><a href="#/SubHeros/edit/{{subhero.id}}">{{subhero.name}}</a></td>
+                    <td><a href="#/Heros/edit/{{subhero.hero.id}}">{{subhero.hero.name}}</a></td>
                 </tr>
             </tbody>
         </table>

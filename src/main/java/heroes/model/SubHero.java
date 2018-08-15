@@ -22,7 +22,6 @@ public class SubHero implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@Column(length = 25)
 	private String name;
 
 	@ManyToOne

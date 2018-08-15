@@ -16,7 +16,7 @@ angular.module('heroes-forge').controller('EditHeroController', function($scope,
                     };
                     var labelObject = {
                         value : item.id,
-                        text : item.id
+                        text : item.name
                     };
                     if($scope.hero.subheros){
                         $.each($scope.hero.subheros, function(idx, element) {

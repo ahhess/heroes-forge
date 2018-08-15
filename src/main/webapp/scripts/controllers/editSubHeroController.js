@@ -16,7 +16,7 @@ angular.module('heroes-forge').controller('EditSubHeroController', function($sco
                     };
                     var labelObject = {
                         value : item.id,
-                        text : item.id
+                        text : item.name
                     };
                     if($scope.subHero.hero && item.id == $scope.subHero.hero.id) {
                         $scope.heroSelection = labelObject;
