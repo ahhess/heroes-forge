@@ -1,18 +1,14 @@
 package heroes.model;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
-import javax.persistence.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Column;
+import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Set;
-import java.util.HashSet;
-import heroes.model.SubHero;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 
 @Entity
 @XmlRootElement
@@ -29,9 +25,6 @@ public class Hero implements Serializable {
 
 	@Column
 	private String name;
-
-	@OneToMany(mappedBy = "hero", cascade = CascadeType.ALL)
-	private Set<SubHero> subheros = new HashSet<SubHero>();
 
 	public Long getId() {
 		return this.id;
@@ -88,13 +81,5 @@ public class Hero implements Serializable {
 		if (name != null && !name.trim().isEmpty())
 			result += "name: " + name;
 		return result;
-	}
-
-	public Set<SubHero> getSubheros() {
-		return this.subheros;
-	}
-
-	public void setSubheros(final Set<SubHero> subheros) {
-		this.subheros = subheros;
 	}
 }

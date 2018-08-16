@@ -1,34 +1,14 @@
 
-angular.module('heroes-forge').controller('NewHeroController', function ($scope, $location, locationParser, flash, HeroResource , SubHeroResource) {
+angular.module('heroes-forge').controller('NewHeroController', function ($scope, $location, locationParser, flash, HeroResource) {
     $scope.disabled = false;
     $scope.$location = $location;
     $scope.hero = $scope.hero || {};
     
-    $scope.subherosList = SubHeroResource.queryAll(function(items){
-        $scope.subherosSelectionList = $.map(items, function(item) {
-            return ( {
-                value : item.id,
-                text : item.name
-            });
-        });
-    });
-    $scope.$watch("subherosSelection", function(selection) {
-        if (typeof selection != 'undefined') {
-            $scope.hero.subheros = [];
-            $.each(selection, function(idx,selectedItem) {
-                var collectionItem = {};
-                collectionItem.id = selectedItem.value;
-                $scope.hero.subheros.push(collectionItem);
-            });
-        }
-    });
-
-
     $scope.save = function() {
         var successCallback = function(data,responseHeaders){
             var id = locationParser(responseHeaders);
             flash.setMessage({'type':'success','text':'The hero was created successfully.'});
-            $location.path('/Heros');
+            $location.path('/Heroes');
         };
         var errorCallback = function(response) {
             if(response && response.data) {
@@ -41,6 +21,6 @@ angular.module('heroes-forge').controller('NewHeroController', function ($scope,
     };
     
     $scope.cancel = function() {
-        $location.path("/Heros");
+        $location.path("/Heroes");
     };
 });

@@ -1,6 +1,6 @@
 
 
-angular.module('heroes-forge').controller('SearchHeroController', function($scope, $http, $filter, HeroResource , SubHeroResource) {
+angular.module('heroes-forge').controller('SearchHeroController', function($scope, $http, $filter, HeroResource) {
 
     $scope.search={};
     $scope.currentPage = 0;

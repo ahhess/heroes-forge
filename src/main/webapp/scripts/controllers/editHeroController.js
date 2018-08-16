@@ -1,6 +1,6 @@
 
 
-angular.module('heroes-forge').controller('EditHeroController', function($scope, $routeParams, $location, flash, HeroResource , SubHeroResource) {
+angular.module('heroes-forge').controller('EditHeroController', function($scope, $routeParams, $location, flash, HeroResource) {
     var self = this;
     $scope.disabled = false;
     $scope.$location = $location;
@@ -9,31 +9,10 @@ angular.module('heroes-forge').controller('EditHeroController', function($scope,
         var successCallback = function(data){
             self.original = data;
             $scope.hero = new HeroResource(self.original);
-            SubHeroResource.queryAll(function(items) {
-                $scope.subherosSelectionList = $.map(items, function(item) {
-                    var wrappedObject = {
-                        id : item.id
-                    };
-                    var labelObject = {
-                        value : item.id,
-                        text : item.name
-                    };
-                    if($scope.hero.subheros){
-                        $.each($scope.hero.subheros, function(idx, element) {
-                            if(item.id == element.id) {
-                                $scope.subherosSelection.push(labelObject);
-                                $scope.hero.subheros.push(wrappedObject);
-                            }
-                        });
-                        self.original.subheros = $scope.hero.subheros;
-                    }
-                    return labelObject;
-                });
-            });
         };
         var errorCallback = function() {
             flash.setMessage({'type': 'error', 'text': 'The hero could not be found.'});
-            $location.path("/Heros");
+            $location.path("/Heroes");
         };
         HeroResource.get({HeroId:$routeParams.HeroId}, successCallback, errorCallback);
     };
@@ -58,13 +37,13 @@ angular.module('heroes-forge').controller('EditHeroController', function($scope,
     };
 
     $scope.cancel = function() {
-        $location.path("/Heros");
+        $location.path("/Heroes");
     };
 
     $scope.remove = function() {
         var successCallback = function() {
             flash.setMessage({'type': 'error', 'text': 'The hero was deleted.'});
-            $location.path("/Heros");
+            $location.path("/Heroes");
         };
         var errorCallback = function(response) {
             if(response && response.data && response.data.message) {
@@ -75,18 +54,6 @@ angular.module('heroes-forge').controller('EditHeroController', function($scope,
         }; 
         $scope.hero.$remove(successCallback, errorCallback);
     };
-    
-    $scope.subherosSelection = $scope.subherosSelection || [];
-    $scope.$watch("subherosSelection", function(selection) {
-        if (typeof selection != 'undefined' && $scope.hero) {
-            $scope.hero.subheros = [];
-            $.each(selection, function(idx,selectedItem) {
-                var collectionItem = {};
-                collectionItem.id = selectedItem.value;
-                $scope.hero.subheros.push(collectionItem);
-            });
-        }
-    });
-    
+        
     $scope.get();
 });

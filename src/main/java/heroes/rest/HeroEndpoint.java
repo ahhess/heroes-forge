@@ -1,6 +1,5 @@
 package heroes.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -21,22 +20,21 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
-import heroes.rest.dto.HeroDTO;
+
 import heroes.model.Hero;
 
 /**
- * 
+ * Heroes Resource Endpoint
  */
 @Stateless
-@Path("/heros")
+@Path("/hero")
 public class HeroEndpoint {
-	@PersistenceContext(unitName = "heroes-forge-persistence-unit")
+	@PersistenceContext(unitName = "heroesPU")
 	private EntityManager em;
 
 	@POST
 	@Consumes("application/json")
-	public Response create(HeroDTO dto) {
-		Hero entity = dto.fromDTO(null, em);
+	public Response create(Hero entity) {
 		em.persist(entity);
 		return Response.created(
 				UriBuilder.fromResource(HeroEndpoint.class)
@@ -60,7 +58,7 @@ public class HeroEndpoint {
 	public Response findById(@PathParam("id") Long id) {
 		TypedQuery<Hero> findByIdQuery = em
 				.createQuery(
-						"SELECT DISTINCT h FROM Hero h LEFT JOIN FETCH h.subheros WHERE h.id = :entityId ORDER BY h.name",
+						"SELECT h FROM Hero h WHERE h.id = :entityId",
 						Hero.class);
 		findByIdQuery.setParameter("entityId", id);
 		Hero entity;
@@ -72,17 +70,16 @@ public class HeroEndpoint {
 		if (entity == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		HeroDTO dto = new HeroDTO(entity);
-		return Response.ok(dto).build();
+		return Response.ok(entity).build();
 	}
 
 	@GET
 	@Produces("application/json")
-	public List<HeroDTO> listAll(@QueryParam("start") Integer startPosition,
+	public List<Hero> listAll(@QueryParam("start") Integer startPosition,
 			@QueryParam("max") Integer maxResult) {
 		TypedQuery<Hero> findAllQuery = em
 				.createQuery(
-						"SELECT DISTINCT h FROM Hero h LEFT JOIN FETCH h.subheros ORDER BY h.name",
+						"SELECT h FROM Hero h ORDER BY h.name",
 						Hero.class);
 		if (startPosition != null) {
 			findAllQuery.setFirstResult(startPosition);
@@ -90,19 +87,13 @@ public class HeroEndpoint {
 		if (maxResult != null) {
 			findAllQuery.setMaxResults(maxResult);
 		}
-		final List<Hero> searchResults = findAllQuery.getResultList();
-		final List<HeroDTO> results = new ArrayList<HeroDTO>();
-		for (Hero searchResult : searchResults) {
-			HeroDTO dto = new HeroDTO(searchResult);
-			results.add(dto);
-		}
-		return results;
+		return findAllQuery.getResultList();
 	}
 
 	@PUT
 	@Path("/{id:[0-9][0-9]*}")
 	@Consumes("application/json")
-	public Response update(@PathParam("id") Long id, HeroDTO dto) {
+	public Response update(@PathParam("id") Long id, Hero dto) {
 		if (dto == null) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
@@ -116,12 +107,11 @@ public class HeroEndpoint {
 		if (entity == null) {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		entity = dto.fromDTO(entity, em);
+		entity = dto;
 		try {
 			entity = em.merge(entity);
 		} catch (OptimisticLockException e) {
-			return Response.status(Status.CONFLICT).entity(e.getEntity())
-					.build();
+			return Response.status(Status.CONFLICT).entity(e.getEntity()).build();
 		}
 		return Response.noContent().build();
 	}

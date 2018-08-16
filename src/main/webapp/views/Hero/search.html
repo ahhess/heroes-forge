@@ -2,7 +2,7 @@
     <h3>Create a new Hero</h3>
     <div class="form-group">
         <div class="col-md-offset-2 col-sm-2">
-            <a id="Create" name="Create" class="btn btn-primary" href="#/Heros/new"><span class="glyphicon glyphicon-plus-sign"></span> Create</a>
+            <a id="Create" name="Create" class="btn btn-primary" href="#/Heroes/new"><span class="glyphicon glyphicon-plus-sign"></span> Create</a>
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
             </thead>
             <tbody id="search-results-body">
                 <tr ng-repeat="result in filteredResults | startFrom:currentPage*pageSize | limitTo:pageSize">
-                    <td><a href="#/Heros/edit/{{result.id}}">{{result.name}}</a></td>
+                    <td><a href="#/Heroes/edit/{{result.id}}">{{result.name}}</a></td>
                 </tr>
             </tbody>
         </table>
